@@ -1,6 +1,9 @@
 package main
 
 import (
+	"os"
+
+	"github.com/joho/godotenv"
 	_ "github.com/labstack/echo/middleware"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -8,11 +11,18 @@ import (
 )
 
 func main() {
+	var port string
+	if err := godotenv.Load(".env"); err != nil{
+		port = "1323"
+	} else {
+		port = os.Getenv("PORT")
+	}
+
 	r := echo.New()
+
 
 	r.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"http://localhost:3000", "https://labstack.net"},
-		// AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 	  }))
 
 	r.Use(middleware.Logger())
@@ -30,5 +40,5 @@ func main() {
 
 	e.POST("/message-us", messageUs.Create)
 
-	r.Logger.Fatal(r.Start(":1323"))
+	r.Logger.Fatal(r.Start(":" + port))
 }
