@@ -13,7 +13,7 @@ import (
 func main() {
 	var port string
 	if err := godotenv.Load(".env"); err != nil{
-		port = "1323"
+		port = "8080"
 	} else {
 		port = os.Getenv("PORT")
 	}
