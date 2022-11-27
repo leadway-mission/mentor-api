@@ -22,7 +22,7 @@ func main() {
 
 
 	r.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:3000", "https://labstack.net"},
+		AllowOrigins: []string{"http://localhost:3000", "https://labstack.net", "http://localhost:8080"},
 	  }))
 
 	r.Use(middleware.Logger())
@@ -34,6 +34,7 @@ func main() {
 	e.POST("/mentors", mentor.Create)
 	e.GET("/mentors/:id", mentor.Login)
 	e.PUT("/mentors/:id", mentor.UpdateUser)
+	e.GET("/mentors/:id/fetch", mentor.FetchByID)
 
 	e.POST("/blogs", blog.Create)
 	e.GET("/blogs", blog.FetchAll)

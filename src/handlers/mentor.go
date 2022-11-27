@@ -1,8 +1,11 @@
 package handlers
 
 import (
+	"fmt"
+	_"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/leadwaymisson/mentorship/api/src/entities"
@@ -78,8 +81,21 @@ func(m Mentor) Login(c echo.Context) error {
 	if err != nil {
 		return echo.ErrInternalServerError
 	}
+
+	log.Printf("Mentor Id %v", mentor.ID.Hex())
+	apiEndpoint := os.Getenv("MENTOR_API")
+	url := fmt.Sprintf("%s/api/mentors/%s/mentees", apiEndpoint, mentor.ID.Hex())
+	
+	resp, err := utils.GetCall(url)
+
+	if err != nil {
+		log.Printf("Error while making api call %v", err)
+	}
+
+	log.Printf("%v", resp)
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"mentor": mentor,
+		"mentees": resp,
 	})
 }
 
@@ -96,6 +112,17 @@ func(m Mentor) UpdateUser(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]string{
 		"message": "Data successfully updated.",
+	})
+}
+
+func(m Mentor) FetchByID(c echo.Context) error {
+	id := c.Param("id")
+	mentor, err := m.Repo.FetchByID(id)
+	if err != nil {
+		return &echo.HTTPError{Code: 404, Message: "Mentor not found"}
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"mentor": mentor,
 	})
 }
 
