@@ -92,10 +92,30 @@ func(m Mentor) Login(c echo.Context) error {
 		log.Printf("Error while making api call %v", err)
 	}
 
-	log.Printf("%v", resp)
+	var mentees []map[string]interface{}
+
+	for i := 0; i < 2; i++ {
+		var mentee = map[string]interface{}{}
+		//var user = map[string]interface{}{}
+
+		mentee["id"] = "631643fa4a298d5d90134af4"
+		mentee["mentor_id"] = "63864031811e056716399b1c"
+		mentee["firstname"] = "Mentee Michael"
+		mentee["lastname"] = "Ukwenya"
+		mentee["email"] = "osaro96@hotmail.com"
+
+		//mentee["user"] = user
+
+		mentees = append(mentees, mentee)
+	}
+
+
+	log.Printf("Response is this one >>>>> %v", resp)
+	log.Printf("Mock data is this one >>>>> %v", mentees)
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"mentor": mentor,
-		"mentees": resp,
+		"mentees": mentees,
 	})
 }
 

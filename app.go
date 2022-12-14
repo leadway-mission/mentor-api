@@ -20,9 +20,8 @@ func main() {
 
 	r := echo.New()
 
-
 	r.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:3000", "https://labstack.net", "http://localhost:8080"},
+		AllowOrigins: []string{"http://localhost:3000", "https://labstack.net", "http://localhost:8080", "http://localhost:8081"},
 	  }))
 
 	r.Use(middleware.Logger())
